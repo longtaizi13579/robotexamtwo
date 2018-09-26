@@ -63,6 +63,7 @@
 
 /* USER CODE END Private defines */
 void pidcontrol();
+void sitepidcontrol();
 #ifdef __cplusplus
  extern "C" {
 #endif

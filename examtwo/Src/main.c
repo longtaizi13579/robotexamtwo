@@ -149,6 +149,7 @@ void HAL_SYSTICK_Callback(){
    // int speed=TIM2->CNT;
     //TIM2->CNT=0;
     // uprintf("speed=%d\n",speed);
+    sitepidcontrol();
     pidcontrol();
   }
 }
@@ -219,6 +220,8 @@ void _Error_Handler(char * file, int line)
   }
   /* USER CODE END Error_Handler_Debug */ 
 }
+int speed=0;
+//速度环
 int speedset=300;
 int speederroracc=0;
 float speedkp=0.3;//0.33
@@ -227,23 +230,44 @@ float speedkd=-0.38;//-0.38
 float speederrorlast=0;
 void pidcontrol()
 {
-    int speed=TIM2->CNT;
-    TIM2->CNT=0;
-    if(speed>30000)
-     {
-        speed=speed-65536;
-      }
     float error=speedset-speed;
     speederroracc+=error;
     int speedPIDcontrol=(int)(speedkp*error+speedki*speederroracc+speedkd*(error-speederrorlast));
     speederrorlast=error;
     // uprintf("speed=%d\n",speed);
-    uprintf("speedki*speederroracc=%d\n",(int)(speedki*speederroracc));
+    //uprintf("speedki*speederroracc=%d\n",(int)(speedki*speederroracc));
     pwm_control(speedPIDcontrol);
-    send_wave((float)speed,(float)speedPIDcontrol,0.0,0.0);
+    //send_wave((float)speed,(float)speedPIDcontrol,0.0,0.0);
 }
-
-
+//位置环
+int sitespeedset=100000;
+int sitespeederroracc=0;
+float sitespeedkp=0.1;//0.33
+//float sitespeedki=0.0004;//0.001
+float sitespeedkd=-0.08;//-0.38
+float sitespeederrorlast=0;
+void sitepidcontrol()
+{
+    speed=TIM2->CNT;
+    TIM2->CNT=0;
+    if(speed>30000)
+     {
+        speed=speed-65536;
+      }  
+   sitespeedset=sitespeedset-speed;
+  if(sitespeedset>10000)
+    {
+      speedset=1298;
+    }
+    else
+    {
+      float error=sitespeedset;
+      speedset=(int)(sitespeedkp*error+sitespeedkd*(error-sitespeederrorlast));
+      sitespeederrorlast=error;
+      
+    }
+  send_wave((float)speedset,(float)sitespeedset,0.0,0.0);
+}
 #ifdef USE_FULL_ASSERT
 
 /**
