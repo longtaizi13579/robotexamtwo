@@ -62,7 +62,7 @@
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
-
+void pidcontrol();
 #ifdef __cplusplus
  extern "C" {
 #endif

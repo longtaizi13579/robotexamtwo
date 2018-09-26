@@ -56,7 +56,37 @@
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+void pwm_control(int pulse1)//电机占空比变化代码
+{
+  if(pulse1>1000)
+  {
+    pulse1=1000;
+    //pulseleft=1000;
+  }
+   if(pulse1<-1000)
+   {
+     pulse1=-1000;
+     //pulseleft=-1000;
+   }
+  if(pulse1>0)
+  {
+   TIM4->CCR1=1000-pulse1;
+   TIM4->CCR2=1000;//正
+  }
+  else if(pulse1<0)
+  {
+    TIM4->CCR1=1000;
+   TIM4->CCR2=1000+pulse1;//负
+  }
+  if(pulse1==0)
+  {
+    TIM4->CCR1=1000;
+    TIM4->CCR2=1000; 
+  }
+  uprintf("TIM4->CCR1=%d,TIM4->CCR2=%d\n",TIM4->CCR1,TIM4->CCR2);
+    //uprintf("pulse1=%d,pulse2=%d",pulse1,pulse2);
 
+}
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
 
@@ -94,12 +124,11 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM2_Init();
   MX_TIM4_Init();
-
+  TIM4->CCR1=100;
+  TIM4->CCR2=1000;//正
   /* USER CODE BEGIN 2 */
   /* USER CODE END 2 */
-TIM4->CCR1=900;
-TIM4->CCR2=1000;
-HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9,0);
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
@@ -111,6 +140,17 @@ HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9,0);
   }
   /* USER CODE END 3 */
 
+}
+void HAL_SYSTICK_Callback(){ 
+  static int time_1ms;
+  time_1ms++;
+  if(time_1ms==5){
+    time_1ms=0;
+   // int speed=TIM2->CNT;
+    //TIM2->CNT=0;
+    // uprintf("speed=%d\n",speed);
+    pidcontrol();
+  }
 }
 
 /** System Clock Configuration
@@ -179,6 +219,30 @@ void _Error_Handler(char * file, int line)
   }
   /* USER CODE END Error_Handler_Debug */ 
 }
+int speedset=300;
+int speederroracc=0;
+float speedkp=0.3;//0.33
+float speedki=0.0004;//0.001
+float speedkd=-0.38;//-0.38
+float speederrorlast=0;
+void pidcontrol()
+{
+    int speed=TIM2->CNT;
+    TIM2->CNT=0;
+    if(speed>30000)
+     {
+        speed=speed-65536;
+      }
+    float error=speedset-speed;
+    speederroracc+=error;
+    int speedPIDcontrol=(int)(speedkp*error+speedki*speederroracc+speedkd*(error-speederrorlast));
+    speederrorlast=error;
+    // uprintf("speed=%d\n",speed);
+    uprintf("speedki*speederroracc=%d\n",(int)(speedki*speederroracc));
+    pwm_control(speedPIDcontrol);
+    send_wave((float)speed,(float)speedPIDcontrol,0.0,0.0);
+}
+
 
 #ifdef USE_FULL_ASSERT
 

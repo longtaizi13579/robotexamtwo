@@ -41,7 +41,7 @@
 #include "usart.h"
 
 #include "gpio.h"
-
+#include "stdarg.h"
 /* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
@@ -49,7 +49,7 @@
 UART_HandleTypeDef huart1;
 
 /* USART1 init function */
-
+char buffer_rx_temp;
 void MX_USART1_UART_Init(void)
 {
 
@@ -65,7 +65,9 @@ void MX_USART1_UART_Init(void)
   {
     _Error_Handler(__FILE__, __LINE__);
   }
-
+   HAL_NVIC_SetPriority(USART1_IRQn, 4, 0);
+   HAL_NVIC_EnableIRQ(USART1_IRQn);
+   HAL_UART_Receive_IT(&huart1,(uint8_t *)&buffer_rx_temp,1);
 }
 
 void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
@@ -94,6 +96,9 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
+    /* USART1 interrupt Init */
+    HAL_NVIC_SetPriority(USART1_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(USART1_IRQn);
   /* USER CODE BEGIN USART1_MspInit 1 */
 
   /* USER CODE END USART1_MspInit 1 */
@@ -117,12 +122,64 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
     */
     HAL_GPIO_DeInit(GPIOA, GPIO_PIN_9|GPIO_PIN_10);
 
+    /* USART1 interrupt Deinit */
+    HAL_NVIC_DisableIRQ(USART1_IRQn);
   /* USER CODE BEGIN USART1_MspDeInit 1 */
 
   /* USER CODE END USART1_MspDeInit 1 */
   }
 } 
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
+   HAL_UART_Receive_IT(&huart1,(uint8_t *)&buffer_rx_temp,1);
+    if(buffer_rx_temp=='a')
+    {
+       TIM4->CCR2=40;
+       TIM4->CCR1=1000; 
+    }
+    else if(buffer_rx_temp=='b')
+    {
+      TIM4->CCR1=1000;  
+      TIM4->CCR2=200;
+    }
+    else if(buffer_rx_temp=='c')
+    {
+       TIM4->CCR1=40; 
+      TIM4->CCR2=1000;
+    }
+    else if(buffer_rx_temp=='d')
+    {
+       TIM4->CCR1=1000;
+       TIM4->CCR2=1000;
+    }
+       
+}
+char uart_buffer[100 + 1];
+void uprintf(char *fmt, ...)
+{
+	int size;
+	
+	va_list arg_ptr;
+	
+	va_start(arg_ptr, fmt);  
+	
+	size=vsnprintf(uart_buffer, 100 + 1, fmt, arg_ptr);
+	va_end(arg_ptr);
+        HAL_UART_Transmit(&huart1,(uint8_t *)uart_buffer,size,1000);
+}
+char s[22]={'b','y',16,6};
+void send_wave(float arg1,float arg2,float arg3,float arg4){
 
+  s[2]=16;  //length
+  s[3]=6;   //type
+  s[20]='\r';
+  s[21]='\n';
+  memcpy(s+4,&arg1,sizeof(arg1));
+  memcpy(s+8,&arg2,sizeof(arg1));
+  memcpy(s+12,&arg3,sizeof(arg1));
+  memcpy(s+16,&arg4,sizeof(arg1));
+  HAL_UART_Transmit(&huart1,(uint8_t *)s, 22,1000);
+
+}
 /* USER CODE BEGIN 1 */
 
 /* USER CODE END 1 */

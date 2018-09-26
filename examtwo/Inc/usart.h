@@ -60,7 +60,8 @@ extern UART_HandleTypeDef huart1;
 extern void _Error_Handler(char *, int);
 
 void MX_USART1_UART_Init(void);
-
+void uprintf(char *fmt, ...);
+void send_wave(float,float,float,float);
 /* USER CODE BEGIN Prototypes */
 
 /* USER CODE END Prototypes */
