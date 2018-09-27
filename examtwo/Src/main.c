@@ -226,7 +226,7 @@ int speedset=700;
 int speederroracc=0;
 float speedkp=2.88;//2.88;//0.3
 float speedki=0;//0.004;//0.0004
-float speedkd=-3.6;//-25;//-1;//-0.38
+float speedkd=-0.92;//-0.92 -0.98//-0.86 -0.82 -0.79 -0.77 -0.75//-0.73//-0.63 -0.58;//-0.15;//-0.3;//-25;//-1;//-0.38
 float speederrorlast=0;
 void pidcontrol()
 {

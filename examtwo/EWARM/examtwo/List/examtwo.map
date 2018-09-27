@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR ELF Linker V8.22.1.15669/W32 for ARM                27/Sep/2018  10:29:47
+# IAR ELF Linker V8.22.1.15669/W32 for ARM                27/Sep/2018  16:47:31
 # Copyright 2007-2018 IAR Systems AB.
 #
 #    Output file  =  
@@ -8,7 +8,7 @@
 #    Map file     =  
 #        D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\List\examtwo.map
 #    Command line =  
-#        -f C:\Users\bread\AppData\Local\Temp\EW543D.tmp
+#        -f C:\Users\bread\AppData\Local\Temp\EW28B9.tmp
 #        (D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj\gpio.o
 #        D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj\main.o
 #        D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj\startup_stm32f103xe.o
@@ -77,7 +77,7 @@ initialize by copy { rw };
   .intvec            ro code  0x08000000   0x130  startup_stm32f103xe.o [1]
                             - 0x08000130   0x130
 
-"P1":                                     0x1ebb
+"P1":                                     0x1ebc
   .text              ro code  0x08000130   0x4f0  stm32f1xx_hal_uart.o [1]
   .text              ro code  0x08000620   0x19c  usart.o [1]
   .text              ro code  0x080007bc     0xc  stm32f1xx_hal.o [1]
@@ -177,8 +177,8 @@ initialize by copy { rw };
   .text              ro code  0x08001fb0     0x4  startup_stm32f103xe.o [1]
   .rodata            const    0x08001fb4     0x0  zero_init3.o [5]
   .rodata            const    0x08001fb4     0x0  packbits_init_single.o [5]
-  Initializer bytes  const    0x08001fb4    0x37  <for P2-1>
-                            - 0x08001feb  0x1ebb
+  Initializer bytes  const    0x08001fb4    0x38  <for P2-1>
+                            - 0x08001fec  0x1ebc
 
 "P2", part 1 of 3:                         0x100
   P2-1                        0x20000000   0x100  <Init block>
@@ -211,8 +211,8 @@ Zero (__iar_zero_init3)
           0x20000100   0x84
 
 Copy/packbits (__iar_packbits_init_single3)
-    1 source range, total size 0x37 (21% of destination):
-          0x08001fb4   0x37
+    1 source range, total size 0x38 (21% of destination):
+          0x08001fb4   0x38
     1 destination range, total size 0x100:
           0x20000000  0x100
 
@@ -238,11 +238,11 @@ D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj: [1]
     stm32f1xx_hal_tim_ex.o       74
     stm32f1xx_hal_uart.o      1 268
     stm32f1xx_it.o               44
-    system_stm32f1xx.o           92        8        4
+    system_stm32f1xx.o           92        9        4
     tim.o                       440               128
     usart.o                     412       43      196
     -------------------------------------------------
-    Total:                    6 996       63      388
+    Total:                    6 996       64      388
 
 command line: [2]
     -------------------------------------------------
@@ -283,7 +283,7 @@ shb_l.a: [6]
     Gaps                         14
     Linker created                        32    1 024
 -----------------------------------------------------
-    Grand Total:              8 076       95    1 412
+    Grand Total:              8 076       96    1 412
 
 
 *******************************************************************************
@@ -443,7 +443,7 @@ uwTickPrio              0x20000034    0x4  Data  Gb  stm32f1xx_hal.o [1]
 [6] = shb_l.a
 
   8 076 bytes of readonly  code memory
-     95 bytes of readonly  data memory
+     96 bytes of readonly  data memory
   1 412 bytes of readwrite data memory
 
 Errors: none
