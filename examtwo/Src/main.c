@@ -83,7 +83,7 @@ void pwm_control(int pulse1)//电机占空比变化代码
     TIM4->CCR1=1000;
     TIM4->CCR2=1000; 
   }
-  uprintf("TIM4->CCR1=%d,TIM4->CCR2=%d\n",TIM4->CCR1,TIM4->CCR2);
+  //uprintf("TIM4->CCR1=%d,TIM4->CCR2=%d\n",TIM4->CCR1,TIM4->CCR2);
     //uprintf("pulse1=%d,pulse2=%d",pulse1,pulse2);
 
 }
@@ -149,7 +149,7 @@ void HAL_SYSTICK_Callback(){
    // int speed=TIM2->CNT;
     //TIM2->CNT=0;
     // uprintf("speed=%d\n",speed);
-    sitepidcontrol();
+    //sitepidcontrol();
     pidcontrol();
   }
 }
@@ -222,14 +222,20 @@ void _Error_Handler(char * file, int line)
 }
 int speed=0;
 //速度环
-int speedset=300;
+int speedset=700;
 int speederroracc=0;
-float speedkp=0.3;//0.33
-float speedki=0.0004;//0.001
-float speedkd=-0.38;//-0.38
+float speedkp=2.88;//2.88;//0.3
+float speedki=0;//0.004;//0.0004
+float speedkd=-3.6;//-25;//-1;//-0.38
 float speederrorlast=0;
 void pidcontrol()
 {
+    speed=TIM2->CNT;
+    TIM2->CNT=0;
+    if(speed>30000)
+     {
+        speed=speed-65536;
+      }  
     float error=speedset-speed;
     speederroracc+=error;
     int speedPIDcontrol=(int)(speedkp*error+speedki*speederroracc+speedkd*(error-speederrorlast));
@@ -237,7 +243,7 @@ void pidcontrol()
     // uprintf("speed=%d\n",speed);
     //uprintf("speedki*speederroracc=%d\n",(int)(speedki*speederroracc));
     pwm_control(speedPIDcontrol);
-    //send_wave((float)speed,(float)speedPIDcontrol,0.0,0.0);
+    send_wave((float)speed,(float)speedPIDcontrol,700.0,0.0);
 }
 //位置环
 int sitespeedset=100000;

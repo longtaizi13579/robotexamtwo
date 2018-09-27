@@ -1,0 +1,15 @@
+"D:\robot\IAR 8.22.1\arm\bin\armproc.dll" 
+
+"D:\robot\IAR 8.22.1\arm\bin\armjlink2.dll" 
+
+"D:\robot\examtwo\robotexamtwo\beginmyexamthree\EWARM\examtwo\Exe\examtwo.out" 
+
+--plugin "D:\robot\IAR 8.22.1\arm\bin\armbat.dll" 
+
+--device_macro "D:\robot\IAR 8.22.1\arm\config\debugger\ST\STM32F1xx_XL.dmac" 
+
+--flash_loader "D:\robot\IAR 8.22.1\arm\config\flashloader\ST\FlashSTM32F10xxC.board" 
+
+
+
+
