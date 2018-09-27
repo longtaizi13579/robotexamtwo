@@ -39,9 +39,10 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "usart.h"
-
+#include "main.h"
 #include "gpio.h"
 #include "stdarg.h"
+#include "string.h"
 /* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
@@ -129,28 +130,21 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
   /* USER CODE END USART1_MspDeInit 1 */
   }
 } 
+char buffer[255];
+int counter=0;
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
    HAL_UART_Receive_IT(&huart1,(uint8_t *)&buffer_rx_temp,1);
-    if(buffer_rx_temp=='a')
-    {
-       TIM4->CCR2=40;
-       TIM4->CCR1=1000; 
-    }
-    else if(buffer_rx_temp=='b')
-    {
-      TIM4->CCR1=1000;  
-      TIM4->CCR2=200;
-    }
-    else if(buffer_rx_temp=='c')
-    {
-       TIM4->CCR1=40; 
-      TIM4->CCR2=1000;
-    }
-    else if(buffer_rx_temp=='d')
-    {
-       TIM4->CCR1=1000;
-       TIM4->CCR2=1000;
-    }
+    if(buffer_rx_temp!='\n')
+   {
+     buffer[counter++]=buffer_rx_temp;   
+   }
+   else
+   {
+    examthree(buffer,counter);
+    uprintf("counter=%d",counter);
+    memset(buffer,'\0',sizeof(char)*255);
+    counter=0;
+   }       
        
 }
 char uart_buffer[100 + 1];
@@ -181,7 +175,79 @@ void send_wave(float arg1,float arg2,float arg3,float arg4){
 
 }
 /* USER CODE BEGIN 1 */
+void examthree(char* command,int count)//解析命令
+{
+  char one[5];//char* a,b;b是char还是char*?
+  char two[6];
+  char three[13];
+  char other[15];
+  //char four[4];
+  memset(one,'\0',sizeof(char)*5);
+  memset(two,'\0',sizeof(char)*6);
+  memset(three,'\0',sizeof(char)*13);
+   memset(other,'\0',sizeof(char)*15);
+  for(int i=0;i<4;i++)
+  {
+    one[i]=command[i];
+  }
+  for(int i=0;i<5;i++)
+  {
+    two[i]=command[i];
+  }
+  for(int i=0;i<12;i++)
+  {
+    three[i]=command[i];
+  }
+  //命令解析
+  if(!(strcmp(one,"site")))
+  {
+    for(int i=5;i<count;i++)
+    {
+      other[i-5]=command[i];
+       uprintf("%c",command[i]);
+    }
+   sitespeedset=trans(other);//100000;
+   enable1=1;
+   //uprintf("1%s\n",other);
+   //uprintf("2%d\n",sitespeedset);
+  }
+  else if(!(strcmp(one,"help")))
+  {
+    uprintf("输入位置:site ***\n输入速度：speed ***\n输入测试：chassis goto * * *\n输入帮助：help\n");
+  }
+  else if(!(strcmp(two,"speed")))
+  {
+  for(int i=6;i<count;i++)
+    {
+      other[i-6]=command[i];
+      uprintf("%c",command[i]);
+    }
+  speedset=trans(other);
+  enable1=0;
+  //uprintf("3%s\n",other);
+ // uprintf("4%d\n",speedset);
+  }
+  else if(!(strcmp(three,"chassis goto")))
+  {
+    uprintf("chassis goto13456789\n");
+  
+  }
+  else
+  {
+    uprintf("输入命令有误\n");
+  }
+}
 
+int trans(char* s)
+{
+  int re=0;
+  while(*s!='\0')
+  {
+    re=re*10+*s-'0';
+    s++;
+  }
+  return re;
+}
 /* USER CODE END 1 */
 
 /**

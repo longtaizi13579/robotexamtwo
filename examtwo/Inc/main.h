@@ -62,8 +62,12 @@
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
-void pidcontrol();
+void pidcontrol1();
+void pidcontrol2();
 void sitepidcontrol();
+extern int speedset;
+extern int sitespeedset;
+extern int enable1;
 #ifdef __cplusplus
  extern "C" {
 #endif

@@ -53,7 +53,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE END PV */
-
+int enable=0;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 void pwm_control(int pulse1)//电机占空比变化代码
@@ -83,7 +83,7 @@ void pwm_control(int pulse1)//电机占空比变化代码
     TIM4->CCR1=1000;
     TIM4->CCR2=1000; 
   }
-  uprintf("TIM4->CCR1=%d,TIM4->CCR2=%d\n",TIM4->CCR1,TIM4->CCR2);
+  //uprintf("TIM4->CCR1=%d,TIM4->CCR2=%d\n",TIM4->CCR1,TIM4->CCR2);
     //uprintf("pulse1=%d,pulse2=%d",pulse1,pulse2);
 
 }
@@ -124,7 +124,7 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM2_Init();
   MX_TIM4_Init();
-  TIM4->CCR1=100;
+  TIM4->CCR1=1000;
   TIM4->CCR2=1000;//正
   /* USER CODE BEGIN 2 */
   /* USER CODE END 2 */
@@ -141,6 +141,7 @@ int main(void)
   /* USER CODE END 3 */
 
 }
+int enable1=0;
 void HAL_SYSTICK_Callback(){ 
   static int time_1ms;
   time_1ms++;
@@ -149,8 +150,15 @@ void HAL_SYSTICK_Callback(){
    // int speed=TIM2->CNT;
     //TIM2->CNT=0;
     // uprintf("speed=%d\n",speed);
+    if(enable1==1)
+    {
     sitepidcontrol();
-    pidcontrol();
+    pidcontrol1();
+    }
+    else
+    {
+    pidcontrol2();
+    }
   }
 }
 
@@ -222,16 +230,41 @@ void _Error_Handler(char * file, int line)
 }
 int speed=0;
 //速度环
-int speedset=300;
+int speedset=0;//300;
 int speederroracc=0;
 float speedkp=0.3;//0.33
-float speedki=0.0004;//0.001
+float speedki=0.0006;//0.001
 float speedkd=-0.38;//-0.38
 float speederrorlast=0;
-void pidcontrol()
+void pidcontrol1()
 {
     float error=speedset-speed;
     speederroracc+=error;
+    /*if(speederroracc>1600000)
+    {
+      speederroracc=1600000;
+    }*/
+    int speedPIDcontrol=(int)(speedkp*error+speedki*speederroracc+speedkd*(error-speederrorlast));
+    speederrorlast=error;
+    // uprintf("speed=%d\n",speed);
+    //uprintf("speedki*speederroracc=%d\n",(int)(speedki*speederroracc));
+    pwm_control(speedPIDcontrol);
+    //send_wave((float)speed,(float)speedPIDcontrol,0.0,0.0);
+}
+void pidcontrol2()
+{
+    speed=TIM2->CNT;
+    TIM2->CNT=0;
+    if(speed>30000)
+     {
+        speed=speed-65536;
+      }  
+    float error=300-speed;
+    speederroracc+=error;
+    /*if(speederroracc>1600000)
+    {
+      speederroracc=1600000;
+    }*/
     int speedPIDcontrol=(int)(speedkp*error+speedki*speederroracc+speedkd*(error-speederrorlast));
     speederrorlast=error;
     // uprintf("speed=%d\n",speed);
@@ -240,9 +273,9 @@ void pidcontrol()
     //send_wave((float)speed,(float)speedPIDcontrol,0.0,0.0);
 }
 //位置环
-int sitespeedset=100000;
+int sitespeedset=0;//100000;
 int sitespeederroracc=0;
-float sitespeedkp=0.1;//0.33
+float sitespeedkp=0.01;//0.33
 //float sitespeedki=0.0004;//0.001
 float sitespeedkd=-0.08;//-0.38
 float sitespeederrorlast=0;
@@ -255,7 +288,7 @@ void sitepidcontrol()
         speed=speed-65536;
       }  
    sitespeedset=sitespeedset-speed;
-  if(sitespeedset>10000)
+  if(sitespeedset>100000)
     {
       speedset=1298;
     }

@@ -62,6 +62,8 @@ extern void _Error_Handler(char *, int);
 void MX_USART1_UART_Init(void);
 void uprintf(char *fmt, ...);
 void send_wave(float,float,float,float);
+void examthree(char* command,int count);
+int trans(char* s);
 /* USER CODE BEGIN Prototypes */
 
 /* USER CODE END Prototypes */
