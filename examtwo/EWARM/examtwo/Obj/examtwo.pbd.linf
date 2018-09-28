@@ -1,6 +1,11 @@
 ﻿D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj\examtwo.pbd
 D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj\gpio.pbi
 D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj\main.pbi
+D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj\stm32f1xx_hal_msp.pbi
+D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj\stm32f1xx_it.pbi
+D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj\tim.pbi
+D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj\usart.pbi
+D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj\system_stm32f1xx.pbi
 D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj\stm32f1xx_hal.pbi
 D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj\stm32f1xx_hal_cortex.pbi
 D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj\stm32f1xx_hal_dma.pbi
@@ -8,14 +13,9 @@ D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj\stm32f1xx_hal_flash.pbi
 D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj\stm32f1xx_hal_flash_ex.pbi
 D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj\stm32f1xx_hal_gpio.pbi
 D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj\stm32f1xx_hal_gpio_ex.pbi
-D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj\stm32f1xx_hal_msp.pbi
 D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj\stm32f1xx_hal_pwr.pbi
 D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj\stm32f1xx_hal_rcc.pbi
 D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj\stm32f1xx_hal_rcc_ex.pbi
 D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj\stm32f1xx_hal_tim.pbi
 D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj\stm32f1xx_hal_tim_ex.pbi
 D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj\stm32f1xx_hal_uart.pbi
-D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj\stm32f1xx_it.pbi
-D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj\system_stm32f1xx.pbi
-D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj\tim.pbi
-D:\robot\examtwo\robotexamtwo\examtwo\EWARM\examtwo\Obj\usart.pbi
