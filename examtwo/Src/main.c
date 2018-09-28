@@ -150,6 +150,7 @@ void HAL_SYSTICK_Callback(){
    // int speed=TIM2->CNT;
     //TIM2->CNT=0;
     // uprintf("speed=%d\n",speed);
+<<<<<<< HEAD
     if(enable1==1)
     {
     sitepidcontrol();
@@ -159,6 +160,10 @@ void HAL_SYSTICK_Callback(){
     {
     pidcontrol2();
     }
+=======
+    //sitepidcontrol();
+    pidcontrol();
+>>>>>>> master
   }
 }
 
@@ -230,14 +235,28 @@ void _Error_Handler(char * file, int line)
 }
 int speed=0;
 //ËÙ¶È»·
+<<<<<<< HEAD
 int speedset=0;//300;
 int speederroracc=0;
 float speedkp=0.6;//0.33
 float speedki=0.005;//0.001
 float speedkd=-0.4;//-0.38
+=======
+int speedset=700;
+int speederroracc=0;
+float speedkp=2.88;//2.88;//0.3
+float speedki=0;//0.004;//0.0004
+float speedkd=-0.92;//-0.92 -0.98//-0.86 -0.82 -0.79 -0.77 -0.75//-0.73//-0.63 -0.58;//-0.15;//-0.3;//-25;//-1;//-0.38
+>>>>>>> master
 float speederrorlast=0;
 void pidcontrol1()
 {
+    speed=TIM2->CNT;
+    TIM2->CNT=0;
+    if(speed>30000)
+     {
+        speed=speed-65536;
+      }  
     float error=speedset-speed;
     speederroracc+=error;
     if(speederroracc>100000)
@@ -249,7 +268,7 @@ void pidcontrol1()
     // uprintf("speed=%d\n",speed);
     //uprintf("speedki*speederroracc=%d\n",(int)(speedki*speederroracc));
     pwm_control(speedPIDcontrol);
-    //send_wave((float)speed,(float)speedPIDcontrol,0.0,0.0);
+    send_wave((float)speed,(float)speedPIDcontrol,700.0,0.0);
 }
 void pidcontrol2()
 {
