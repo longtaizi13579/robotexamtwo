@@ -141,7 +141,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
    else
    {
     examthree(buffer,counter);
-    uprintf("counter=%d",counter);
+   // uprintf("counter=%d",counter);
     memset(buffer,'\0',sizeof(char)*255);
     counter=0;
    }       
@@ -204,10 +204,11 @@ void examthree(char* command,int count)//½âÎöÃüÁî
     for(int i=5;i<count;i++)
     {
       other[i-5]=command[i];
-       uprintf("%c",command[i]);
+      // uprintf("%c",command[i]);
     }
    sitespeedset=trans(other);//100000;
    enable1=1;
+   //uprintf("%d",sitespeedset);
    //uprintf("1%s\n",other);
    //uprintf("2%d\n",sitespeedset);
   }
@@ -220,10 +221,11 @@ void examthree(char* command,int count)//½âÎöÃüÁî
   for(int i=6;i<count;i++)
     {
       other[i-6]=command[i];
-      uprintf("%c",command[i]);
+      //uprintf("%c",command[i]);
     }
   speedset=trans(other);
   enable1=0;
+  //uprintf("%d",speedset);
   //uprintf("3%s\n",other);
  // uprintf("4%d\n",speedset);
   }
@@ -241,10 +243,11 @@ void examthree(char* command,int count)//½âÎöÃüÁî
 int trans(char* s)
 {
   int re=0;
-  while(*s!='\0')
+  while(*s!='\r')
   {
     re=re*10+*s-'0';
     s++;
+    uprintf("re=%d\n",re);
   }
   return re;
 }

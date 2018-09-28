@@ -232,18 +232,18 @@ int speed=0;
 //速度环
 int speedset=0;//300;
 int speederroracc=0;
-float speedkp=0.3;//0.33
-float speedki=0.0006;//0.001
-float speedkd=-0.38;//-0.38
+float speedkp=0.6;//0.33
+float speedki=0.005;//0.001
+float speedkd=-0.4;//-0.38
 float speederrorlast=0;
 void pidcontrol1()
 {
     float error=speedset-speed;
     speederroracc+=error;
-    /*if(speederroracc>1600000)
+    if(speederroracc>100000)
     {
-      speederroracc=1600000;
-    }*/
+      speederroracc=100000;
+    }
     int speedPIDcontrol=(int)(speedkp*error+speedki*speederroracc+speedkd*(error-speederrorlast));
     speederrorlast=error;
     // uprintf("speed=%d\n",speed);
@@ -259,7 +259,7 @@ void pidcontrol2()
      {
         speed=speed-65536;
       }  
-    float error=300-speed;
+    float error=speedset-speed;
     speederroracc+=error;
     /*if(speederroracc>1600000)
     {
@@ -270,12 +270,12 @@ void pidcontrol2()
     // uprintf("speed=%d\n",speed);
     //uprintf("speedki*speederroracc=%d\n",(int)(speedki*speederroracc));
     pwm_control(speedPIDcontrol);
-    //send_wave((float)speed,(float)speedPIDcontrol,0.0,0.0);
+    //send_wave((float)speed,(float)speedPIDcontrol,(float)speedset,0.0);
 }
 //位置环
 int sitespeedset=0;//100000;
 int sitespeederroracc=0;
-float sitespeedkp=0.01;//0.33
+float sitespeedkp=0.005;//0.33
 //float sitespeedki=0.0004;//0.001
 float sitespeedkd=-0.08;//-0.38
 float sitespeederrorlast=0;
@@ -288,7 +288,7 @@ void sitepidcontrol()
         speed=speed-65536;
       }  
    sitespeedset=sitespeedset-speed;
-  if(sitespeedset>100000)
+  if(sitespeedset>200000)
     {
       speedset=1298;
     }
